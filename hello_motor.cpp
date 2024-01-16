@@ -58,20 +58,20 @@ int main()
     }
 
 
-    //when you're ready to start the motor
+    //when you're ready to start the motors
     gpio_write(pi, MOTOR_L_FWD, 0);
     gpio_write(pi, MOTOR_R_FWD, 0);
 
-    // starts a PWM signal to motor A enable at half speed
+    // starts a PWM signal to motors enable at half speed
     set_PWM_dutycycle(pi, PWM_L, 127);
     set_PWM_dutycycle(pi, PWM_R, 127);
     time_sleep(3); //3 second delay
-    //starts motor at full speed
+    //starts motors at full speed
     set_PWM_dutycycle(pi, PWM_L, 255);
     set_PWM_dutycycle(pi, PWM_R, 255);
     time_sleep(3);
 
-    //stops the motor
+    //stops the motors
     gpio_write(pi, MOTOR_L_FWD, 1);
     gpio_write(pi, MOTOR_R_FWD, 1);
     time_sleep(1);
