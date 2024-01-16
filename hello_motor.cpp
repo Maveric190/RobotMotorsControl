@@ -10,10 +10,15 @@ written by Lloyd Brombach and published by Packt Publishing
 #include <pigpiod_if2.h>
 
 
-//define our GPIO pin assignments
-const int PWM_A = 21;
-const int MOTOR_A_FWD = 26;
-const int MOTOR_A_REV = 13;
+//left motor
+const int PWM_L = 21;
+const int MOTOR_L_FWD = 26;
+const int MOTOR_L_REV = 13;
+
+//right motor
+const int PWM_R = 12;
+const int MOTOR_R_FWD = 20;
+const int MOTOR_R_REV = 19;
 
 //handshakes with Pigpio Daemon and sets up our pins.
 int pigpio_setup()
@@ -24,13 +29,20 @@ int pigpio_setup()
 
     //next four lines sets up our pins. Remember that high is "off"
     //and we must drive in1 or in2 low to start the output to motor
-    set_mode(pi,PWM_A, PI_OUTPUT);
-    set_mode(pi,MOTOR_A_FWD, PI_OUTPUT);
-    set_mode(pi,MOTOR_A_REV, PI_OUTPUT);
+    set_mode(pi,PWM_L, PI_OUTPUT);
+    set_mode(pi,MOTOR_L_FWD, PI_OUTPUT);
+    set_mode(pi,MOTOR_L_REV, PI_OUTPUT);
+
+    set_mode(pi,PWM_R, PI_OUTPUT);
+    set_mode(pi,MOTOR_R_FWD, PI_OUTPUT);
+    set_mode(pi,MOTOR_R_REV, PI_OUTPUT);
 
     //initializes motor off
-    gpio_write(pi, MOTOR_A_FWD, 1);
-    gpio_write(pi, MOTOR_A_REV, 1);
+    gpio_write(pi, MOTOR_L_FWD, 1);
+    gpio_write(pi, MOTOR_L_REV, 1);
+    gpio_write(pi, MOTOR_R_FWD, 1);
+    gpio_write(pi, MOTOR_R_REV, 1);
+
     return pi;
 }
 
@@ -47,25 +59,33 @@ int main()
 
 
     //when you're ready to start the motor
-    gpio_write(pi, MOTOR_A_FWD, 0);
+    gpio_write(pi, MOTOR_L_FWD, 0);
+    gpio_write(pi, MOTOR_R_FWD, 0);
 
     // starts a PWM signal to motor A enable at half speed
-    set_PWM_dutycycle(pi, PWM_A, 127);
+    set_PWM_dutycycle(pi, PWM_L, 127);
+    set_PWM_dutycycle(pi, PWM_R, 127);
     time_sleep(3); //3 second delay
     //starts motor at full speed
-    set_PWM_dutycycle(pi, PWM_A, 255);
+    set_PWM_dutycycle(pi, PWM_L, 255);
+    set_PWM_dutycycle(pi, PWM_R, 255);
     time_sleep(3);
 
     //stops the motor
-    gpio_write(pi, MOTOR_A_FWD, 1);
+    gpio_write(pi, MOTOR_L_FWD, 1);
+    gpio_write(pi, MOTOR_R_FWD, 1);
     time_sleep(1);
     //repeats in reverse
-    gpio_write(pi, MOTOR_A_REV, 0);
-    set_PWM_dutycycle(pi, PWM_A, 127);
+    gpio_write(pi, MOTOR_L_REV, 0);
+    set_PWM_dutycycle(pi, PWM_L, 127);
+    gpio_write(pi, MOTOR_R_REV, 0);
+    set_PWM_dutycycle(pi, PWM_R, 127);
     time_sleep(3);
-    set_PWM_dutycycle(pi, PWM_A, 255);
+    set_PWM_dutycycle(pi, PWM_L, 255);
+    set_PWM_dutycycle(pi, PWM_R, 255);
     time_sleep(3);
-    gpio_write(pi, MOTOR_A_REV, 1);
+    gpio_write(pi, MOTOR_L_REV, 1);
+    gpio_write(pi, MOTOR_R_REV, 1);
 
     pigpio_stop(pi);
     return 0;
