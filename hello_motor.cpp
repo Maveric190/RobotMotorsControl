@@ -26,7 +26,7 @@ int pigpio_setup()
     char *addrStr = NULL;
     char *portStr = NULL;
     const int pi = pigpio_start(addrStr, portStr);
-
+      
     //next four lines sets up our pins. Remember that high is "off"
     //and we must drive in1 or in2 low to start the output to motor
     set_mode(pi,PWM_L, PI_OUTPUT);
@@ -42,6 +42,8 @@ int pigpio_setup()
     gpio_write(pi, MOTOR_L_REV, 1);
     gpio_write(pi, MOTOR_R_FWD, 1);
     gpio_write(pi, MOTOR_R_REV, 1);
+
+
 
     return pi;
 }
@@ -87,6 +89,41 @@ int main()
     gpio_write(pi, MOTOR_L_REV, 1);
     gpio_write(pi, MOTOR_R_REV, 1);
 
+    //open serial port connection
+	int UARTHandle = serial_open(pi, "/dev/ttyAMA0",115200,0); //for use with GPIO serial pings 14 and 15
+	
+	//int UARTHandle = serial_open(pi, "/dev/ttyUSB0",115200,0); //for use with FTDI USB device
+	cout<<"UARTHandle = " << UARTHandle<< endl;
+	time_sleep(.1);
+
+	//check serial buffer
+	cout << "Data available start: " << serial_data_available(pi, UARTHandle)<< " bytes" << endl;
+
+	//write a few test bytes
+    serial_write_byte(pi,UARTHandle,6);
+	serial_write_byte(pi,UARTHandle,'f');
+	serial_write_byte(pi,UARTHandle,'F');
+
+	//give time to transmit 
+	time_sleep(.1);
+
+	//check serial buffer again
+	cout << "Data available after writing: " << serial_data_available(pi, UARTHandle)<< " bytes" << endl;
+
+	//read and display one byte
+	cout <<"Byte read = " << serial_read_byte(pi, UARTHandle)<< endl;
+
+	//check serial buffer again
+	cout << "Data available after reading a byte: " << serial_data_available(pi, UARTHandle)<< " bytes" << endl;
+
+	//read and display last two bytes
+    char inA = serial_read_byte(pi, UARTHandle);
+	cout <<"Byte read = " << inA << endl;
+	char inB = serial_read_byte(pi, UARTHandle);
+    cout <<"Byte read = " << inB<< endl;
+
+    //close serial device and terminate connection with pigpio daemon
+	serial_close(pi, UARTHandle);
     pigpio_stop(pi);
     return 0;
 }
