@@ -1,6 +1,8 @@
 # RobotMotorsControl
 Учебный репозиторий для обучения программированию
 
+ОТЧЕТ по практической работе 4 курса "Linux для робототехников" 
+
 В рамках практической работы 4 был создан репозиторий проекта # RobotMotorsControl. В качестве примера 
 использован код hello_motor.cpp из известной книги по робототехнике) Проект предполагает Робота на Raspbery Pi 
 управляющего 2 моторами ,
@@ -30,5 +32,5 @@ Build finished with error(s).
  *  The terminal process terminated with exit code: -1. 
  *  Terminal will be reused by tasks, press any key to close it.
 
-Библиотека pigpiod была установлена в папку vscode/library/, при этом в настройках переменная IncludePath="${workspaceFolder}/**
+Библиотека pigpiod была установлена в папку vscode/library/, при этом в настройках Extensions/C/C++ переменная IncludePath="${workspaceFolder}/**
 Прошу Вас помочь в настройке тулчейна C++ в vscode для Raspberry Pi
