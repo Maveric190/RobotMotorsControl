@@ -90,9 +90,9 @@ int main()
     gpio_write(pi, MOTOR_R_REV, 1);
 
     //open serial port connection
-	int UARTHandle = serial_open(pi, "/dev/ttyAMA0",115200,0); //for use with GPIO serial pings 14 and 15
+	//int UARTHandle = serial_open(pi, "/dev/ttyAMA0",115200,0); //for use with GPIO serial pings 14 and 15
 	
-	//int UARTHandle = serial_open(pi, "/dev/ttyUSB0",115200,0); //for use with FTDI USB device
+	int UARTHandle = serial_open(pi, "/dev/ttyUSB0",115200,0); //for use with FTDI USB device
 	cout<<"UARTHandle = " << UARTHandle<< endl;
 	time_sleep(.1);
 
